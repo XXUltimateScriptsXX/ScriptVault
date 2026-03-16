@@ -22,10 +22,10 @@
     --text-muted: rgba(237, 233, 254, 0.5);
     --glow: 0 0 40px rgba(168, 85, 247, 0.35);
     --glow-strong: 0 0 80px rgba(168, 85, 247, 0.6);
+    --max-w: 960px;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
 
   body {
@@ -39,18 +39,12 @@
 
   /* ── BACKGROUND ── */
   .bg-canvas {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    overflow: hidden;
-    pointer-events: none;
+    position: fixed; inset: 0; z-index: 0;
+    overflow: hidden; pointer-events: none;
   }
-
   .orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(90px);
-    opacity: 0.28;
+    position: absolute; border-radius: 50%;
+    filter: blur(90px); opacity: 0.28;
     animation: drift linear infinite;
   }
   .orb-1 { width: 640px; height: 640px; background: radial-gradient(circle, #7c3aed, transparent 70%); top: -15%; left: -10%; animation-duration: 28s; }
@@ -58,16 +52,14 @@
   .orb-3 { width: 360px; height: 360px; background: radial-gradient(circle, #4c1d95, transparent 70%); bottom: 0; left: 20%; animation-duration: 34s; animation-delay: -14s; }
 
   @keyframes drift {
-    0%   { transform: translate(0, 0) scale(1); }
-    33%  { transform: translate(30px, -40px) scale(1.08); }
-    66%  { transform: translate(-20px, 25px) scale(0.95); }
-    100% { transform: translate(0, 0) scale(1); }
+    0%   { transform: translate(0,0) scale(1); }
+    33%  { transform: translate(30px,-40px) scale(1.08); }
+    66%  { transform: translate(-20px,25px) scale(0.95); }
+    100% { transform: translate(0,0) scale(1); }
   }
 
-  /* star particles */
   .stars {
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     background-image:
       radial-gradient(1px 1px at 15% 22%, rgba(255,255,255,0.6) 0%, transparent 100%),
       radial-gradient(1px 1px at 73% 8%,  rgba(255,255,255,0.4) 0%, transparent 100%),
@@ -80,10 +72,8 @@
       radial-gradient(1.5px 1.5px at 20% 60%, rgba(167,139,250,0.6) 0%, transparent 100%);
   }
 
-  /* grid lines */
   .grid-lines {
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     background-image:
       linear-gradient(rgba(168,85,247,0.04) 1px, transparent 1px),
       linear-gradient(90deg, rgba(168,85,247,0.04) 1px, transparent 1px);
@@ -92,594 +82,324 @@
 
   /* ── LAYOUT ── */
   .page-wrapper {
-    position: relative;
-    z-index: 1;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    position: relative; z-index: 1;
+    min-height: 100vh; display: flex; flex-direction: column;
   }
 
   /* ── NAV ── */
   nav {
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--glass-border);
+    background: rgba(6,2,15,0.45);
+    animation: fadeDown 0.7s ease both;
+    position: sticky; top: 0; z-index: 50;
+  }
+
+  .nav-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 18px 28px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 24px 48px;
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--glass-border);
-    background: rgba(6, 2, 15, 0.4);
-    animation: fadeDown 0.7s ease both;
+    gap: 16px;
   }
 
-  @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
 
   .logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 1.35rem;
-    letter-spacing: -0.02em;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem;
+    letter-spacing: -0.02em; display: flex; align-items: center; gap: 10px;
+    flex-shrink: 0;
   }
-
   .logo-icon {
     width: 34px; height: 34px;
     background: linear-gradient(135deg, var(--p2), var(--p4));
-    border-radius: 9px;
-    display: grid;
-    place-items: center;
+    border-radius: 9px; display: grid; place-items: center;
     box-shadow: 0 0 18px rgba(168,85,247,0.5);
   }
-
   .logo-icon svg { width: 18px; height: 18px; fill: white; }
+  .logo-text {
+    background: linear-gradient(90deg, var(--p1), var(--p0));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
 
-  .logo-text { background: linear-gradient(90deg, var(--p1), var(--p0)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
 
   .nav-badge {
-    font-size: 0.72rem;
-    font-weight: 500;
-    padding: 4px 12px;
-    border-radius: 100px;
+    font-size: 0.72rem; font-weight: 500;
+    padding: 4px 12px; border-radius: 100px;
     border: 1px solid var(--glass-border);
-    background: var(--glass-bg);
-    backdrop-filter: blur(8px);
-    color: var(--p1);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    background: var(--glass-bg); backdrop-filter: blur(8px);
+    color: var(--p1); letter-spacing: 0.05em; text-transform: uppercase;
   }
+
+  /* ── LANG TOGGLE ── */
+  .lang-toggle {
+    display: flex; align-items: center;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 100px; padding: 3px; gap: 0;
+    backdrop-filter: blur(12px); position: relative;
+  }
+
+  .lang-pill {
+    position: absolute;
+    top: 3px; left: 3px;
+    height: calc(100% - 6px);
+    background: linear-gradient(135deg, var(--p3), var(--p4));
+    border-radius: 100px;
+    box-shadow: 0 0 12px rgba(124,58,237,0.55);
+    transition: transform 0.32s cubic-bezier(0.34,1.56,0.64,1), width 0.32s ease;
+    pointer-events: none; z-index: 0;
+  }
+
+  .lang-btn {
+    position: relative; z-index: 1;
+    padding: 5px 14px; border-radius: 100px;
+    border: none; background: transparent;
+    color: var(--text-muted);
+    font-family: 'Syne', sans-serif;
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.07em; cursor: pointer;
+    transition: color 0.25s ease;
+    white-space: nowrap;
+  }
+  .lang-btn.active { color: white; }
 
   /* ── HERO ── */
   .hero {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 80px 24px 60px;
-    gap: 28px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 96px 28px 72px; gap: 26px;
+  }
+
+  .hero-inner {
+    max-width: 640px;
+    display: flex; flex-direction: column; align-items: center; gap: 26px;
   }
 
   .hero-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 18px;
-    border-radius: 100px;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 18px; border-radius: 100px;
     border: 1px solid rgba(192,132,252,0.3);
     background: rgba(120,60,220,0.12);
-    font-size: 0.78rem;
-    font-weight: 500;
-    color: var(--p1);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-size: 0.78rem; font-weight: 500; color: var(--p1);
+    letter-spacing: 0.08em; text-transform: uppercase;
     animation: fadeUp 0.6s 0.1s ease both;
   }
-
   .hero-tag::before {
-    content: '';
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--p1);
-    box-shadow: 0 0 8px var(--p2);
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--p1); box-shadow: 0 0 8px var(--p2);
     animation: pulse 2s ease infinite;
   }
 
-  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
 
   .hero h1 {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: clamp(2.4rem, 6vw, 5rem);
-    line-height: 1.08;
-    letter-spacing: -0.03em;
-    max-width: 820px;
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: clamp(2.2rem, 5.5vw, 4.2rem);
+    line-height: 1.1; letter-spacing: -0.03em;
     animation: fadeUp 0.6s 0.2s ease both;
   }
-
   .hero h1 .accent {
     background: linear-gradient(135deg, var(--p1) 0%, #e879f9 50%, var(--p0) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   }
 
   .hero-sub {
-    font-size: clamp(1rem, 2vw, 1.15rem);
-    font-weight: 300;
-    color: var(--text-muted);
-    max-width: 540px;
-    line-height: 1.7;
+    font-size: clamp(0.95rem, 1.8vw, 1.08rem); font-weight: 300;
+    color: var(--text-muted); line-height: 1.78;
     animation: fadeUp 0.6s 0.3s ease both;
   }
 
   .hero-actions {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: flex; gap: 13px; flex-wrap: wrap; justify-content: center;
     animation: fadeUp 0.6s 0.4s ease both;
   }
 
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+
+  /* lang fade animation */
+  .lang-swap { transition: opacity 0.18s ease, transform 0.18s ease; }
+  .lang-swap.fading { opacity: 0; transform: translateY(5px); }
 
   /* ── BUTTONS ── */
   .btn-primary {
-    position: relative;
-    padding: 16px 38px;
-    border-radius: 14px;
-    font-family: 'Syne', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: 0.01em;
-    border: none;
-    cursor: pointer;
-    background: linear-gradient(135deg, var(--p2), var(--p4));
-    color: white;
+    position: relative; padding: 15px 36px;
+    border-radius: 14px; font-family: 'Syne', sans-serif;
+    font-size: 1rem; font-weight: 700; letter-spacing: 0.01em;
+    border: none; cursor: pointer;
+    background: linear-gradient(135deg, var(--p2), var(--p4)); color: white;
     box-shadow: 0 0 0 1px rgba(168,85,247,0.3), 0 8px 32px rgba(124,58,237,0.4);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     overflow: hidden;
   }
-
   .btn-primary::before {
-    content: '';
-    position: absolute;
-    inset: 0;
+    content: ''; position: absolute; inset: 0;
     background: linear-gradient(135deg, rgba(255,255,255,0.18), transparent);
     border-radius: inherit;
   }
-
   .btn-primary::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -60%;
-    width: 40%;
-    height: 200%;
+    content: ''; position: absolute; top: -50%; left: -60%;
+    width: 40%; height: 200%;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-    transform: skewX(-20deg);
-    transition: left 0.5s ease;
+    transform: skewX(-20deg); transition: left 0.5s ease;
   }
-
   .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 0 0 1px rgba(168,85,247,0.5), var(--glow-strong); }
   .btn-primary:hover::after { left: 120%; }
   .btn-primary:active { transform: translateY(0); }
 
   .btn-secondary {
-    padding: 15px 28px;
-    border-radius: 14px;
-    font-family: 'Syne', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 600;
-    border: 1px solid var(--glass-border);
-    background: var(--glass-bg);
-    backdrop-filter: blur(var(--glass-blur));
-    color: var(--p1);
-    cursor: pointer;
+    padding: 14px 26px; border-radius: 14px;
+    font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 600;
+    border: 1px solid var(--glass-border); background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)); color: var(--p1); cursor: pointer;
     transition: all 0.2s ease;
   }
-
   .btn-secondary:hover { border-color: var(--p2); background: rgba(120,60,220,0.18); color: var(--p0); transform: translateY(-2px); }
 
   /* ── FEATURES ── */
   .features {
-    padding: 60px 48px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-    max-width: 1100px;
-    margin: 0 auto;
-    width: 100%;
-    animation: fadeUp 0.7s 0.5s ease both;
+    padding: 16px 28px 68px;
+    max-width: var(--max-w); margin: 0 auto; width: 100%;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
   }
 
   .feat-card {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(var(--glass-blur));
-    border-radius: 20px;
-    padding: 28px;
-    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-    position: relative;
-    overflow: hidden;
+    background: var(--glass-bg); border: 1px solid var(--glass-border);
+    backdrop-filter: blur(var(--glass-blur)); border-radius: 20px; padding: 26px 22px;
+    position: relative; overflow: hidden;
+    opacity: 0; transform: translateY(22px);
+    transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   }
-
   .feat-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
     background: linear-gradient(90deg, transparent, rgba(192,132,252,0.5), transparent);
   }
+  .feat-card.in { opacity: 1; transform: translateY(0); }
+  .feat-card:hover { border-color: rgba(192,132,252,0.4); box-shadow: var(--glow); }
+  .feat-card.in:hover { transform: translateY(-5px); }
 
-  .feat-card:hover { transform: translateY(-5px); border-color: rgba(192,132,252,0.4); box-shadow: var(--glow); }
+  .feat-icon { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, rgba(168,85,247,0.3), rgba(124,58,237,0.15)); border: 1px solid rgba(192,132,252,0.25); display: grid; place-items: center; margin-bottom: 16px; font-size: 1.3rem; }
+  .feat-card h3 { font-family: 'Syne', sans-serif; font-size: 0.98rem; font-weight: 700; margin-bottom: 7px; color: var(--p0); }
+  .feat-card p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.65; font-weight: 300; }
 
-  .feat-icon {
-    width: 44px; height: 44px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, rgba(168,85,247,0.3), rgba(124,58,237,0.15));
-    border: 1px solid rgba(192,132,252,0.25);
-    display: grid;
-    place-items: center;
-    margin-bottom: 18px;
-    font-size: 1.3rem;
-  }
+  /* ── DIVIDER ── */
+  .divider { width: 100%; max-width: 480px; height: 1px; background: linear-gradient(90deg, transparent, rgba(192,132,252,0.2), transparent); margin: 0 auto 8px; }
 
-  .feat-card h3 {
-    font-family: 'Syne', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    margin-bottom: 8px;
-    color: var(--p0);
-  }
-
-  .feat-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; font-weight: 300; }
-
-  /* ── MODAL OVERLAY ── */
-  .overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(6, 2, 15, 0.75);
-    backdrop-filter: blur(10px);
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-  }
-
-  .overlay.active { opacity: 1; pointer-events: all; }
-
-  .modal {
-    background: linear-gradient(135deg, rgba(30, 10, 60, 0.95), rgba(15, 5, 35, 0.98));
-    border: 1px solid rgba(192,132,252,0.25);
-    border-radius: 28px;
-    padding: 44px 40px;
-    max-width: 500px;
-    width: 100%;
-    position: relative;
-    transform: scale(0.88) translateY(20px);
-    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
-    opacity: 0;
-    box-shadow: 0 40px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(192,132,252,0.1), inset 0 1px 0 rgba(255,255,255,0.06);
-  }
-
-  .overlay.active .modal { transform: scale(1) translateY(0); opacity: 1; }
-
-  .modal::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 50%; transform: translateX(-50%);
-    width: 60%; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(192,132,252,0.6), transparent);
-  }
-
-  .modal-close {
-    position: absolute;
-    top: 18px; right: 18px;
-    width: 34px; height: 34px;
-    border-radius: 50%;
-    border: 1px solid var(--glass-border);
-    background: var(--glass-bg);
-    color: var(--text-muted);
-    cursor: pointer;
-    font-size: 1.1rem;
-    display: grid;
-    place-items: center;
-    transition: all 0.2s ease;
-    line-height: 1;
-  }
-
-  .modal-close:hover { background: rgba(168,85,247,0.2); color: white; border-color: var(--p2); }
-
-  .modal-icon {
-    width: 64px; height: 64px;
-    border-radius: 18px;
-    background: linear-gradient(135deg, var(--p3), var(--p4));
-    display: grid;
-    place-items: center;
-    margin: 0 auto 24px;
-    box-shadow: 0 0 30px rgba(124,58,237,0.5);
-    font-size: 1.8rem;
-  }
-
-  .modal h2 {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.6rem;
-    font-weight: 800;
-    text-align: center;
-    margin-bottom: 8px;
-    letter-spacing: -0.02em;
-  }
-
-  .modal p {
-    text-align: center;
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    margin-bottom: 32px;
-    font-weight: 300;
-    line-height: 1.6;
-  }
-
-  .version-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    margin-bottom: 20px;
-  }
-
-  .version-card {
-    border: 1px solid var(--glass-border);
-    background: var(--glass-bg);
-    border-radius: 16px;
-    padding: 20px 16px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.25s ease;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .version-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(168,85,247,0.1), transparent);
-    opacity: 0;
-    transition: opacity 0.25s ease;
-    border-radius: inherit;
-  }
-
-  .version-card:hover { border-color: var(--p2); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(124,58,237,0.3); }
-  .version-card:hover::before { opacity: 1; }
-
-  .version-card .v-icon { font-size: 1.8rem; margin-bottom: 10px; display: block; }
-
-  .version-card .v-name {
-    font-family: 'Syne', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--p0);
-    margin-bottom: 4px;
-  }
-
-  .version-card .v-desc { font-size: 0.76rem; color: var(--text-muted); }
-
-  .version-card.new-version { border-color: rgba(168,85,247,0.3); }
-  .version-card.new-version .v-icon { filter: drop-shadow(0 0 8px var(--p2)); }
-
-  /* ── TUTORIAL SECTION ── */
+  /* ── TUTORIAL ── */
   .tutorial-section {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 20px 48px 80px;
-    width: 100%;
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    max-width: var(--max-w); margin: 0 auto; padding: 24px 28px 96px; width: 100%;
+    opacity: 0; transform: translateY(42px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
     pointer-events: none;
   }
-
   .tutorial-section.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
 
-  .tutorial-header {
-    text-align: center;
-    margin-bottom: 40px;
-  }
+  .tutorial-header { text-align: center; margin-bottom: 44px; }
+  .tutorial-header .tut-label { display: inline-block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--p1); margin-bottom: 12px; }
+  .tutorial-header h2 { font-family: 'Syne', sans-serif; font-size: clamp(1.55rem, 3.8vw, 2.25rem); font-weight: 800; letter-spacing: -0.025em; margin-bottom: 10px; }
+  .tutorial-header p { font-size: 0.9rem; color: var(--text-muted); font-weight: 300; }
 
-  .tutorial-header .tut-label {
-    display: inline-block;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--p1);
-    margin-bottom: 12px;
-  }
-
-  .tutorial-header h2 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
-    font-weight: 800;
-    letter-spacing: -0.025em;
-    margin-bottom: 12px;
-  }
-
-  .tutorial-header p { font-size: 0.92rem; color: var(--text-muted); font-weight: 300; }
-
-  .steps-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
+  .steps-grid { display: flex; flex-direction: column; gap: 12px; }
 
   .step-card {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(var(--glass-blur));
-    border-radius: 18px;
-    padding: 22px 24px;
-    position: relative;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateX(-20px);
+    display: flex; align-items: flex-start; gap: 20px;
+    background: var(--glass-bg); border: 1px solid var(--glass-border);
+    backdrop-filter: blur(var(--glass-blur)); border-radius: 18px; padding: 22px 24px;
+    position: relative; overflow: hidden;
+    opacity: 0; transform: translateX(-22px);
     transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.2s, box-shadow 0.2s;
   }
-
   .step-card.in { opacity: 1; transform: translateX(0); }
-  .step-card:hover { border-color: rgba(168,85,247,0.35); box-shadow: 0 4px 24px rgba(124,58,237,0.2); }
-
+  .step-card:hover { border-color: rgba(168,85,247,0.38); box-shadow: 0 4px 24px rgba(124,58,237,0.22); }
   .step-card::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 3px;
-    background: linear-gradient(180deg, var(--p2), var(--p4));
-    border-radius: 2px;
-    opacity: 0.6;
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: linear-gradient(180deg, var(--p2), var(--p4)); border-radius: 2px; opacity: 0.65;
   }
 
   .step-num {
-    min-width: 36px; height: 36px;
-    border-radius: 10px;
+    min-width: 36px; height: 36px; border-radius: 10px;
     background: linear-gradient(135deg, var(--p3), var(--p4));
-    display: grid;
-    place-items: center;
-    font-family: 'Syne', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 800;
-    color: white;
-    box-shadow: 0 0 14px rgba(124,58,237,0.4);
-    flex-shrink: 0;
+    display: grid; place-items: center;
+    font-family: 'Syne', sans-serif; font-size: 0.82rem; font-weight: 800; color: white;
+    box-shadow: 0 0 14px rgba(124,58,237,0.4); flex-shrink: 0;
   }
-
-  .step-body h4 {
-    font-family: 'Syne', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--p0);
-    margin-bottom: 5px;
-  }
-
-  .step-body p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; font-weight: 300; }
-
-  .step-body code {
-    display: inline-block;
-    background: rgba(168,85,247,0.15);
-    border: 1px solid rgba(168,85,247,0.25);
-    padding: 2px 8px;
-    border-radius: 6px;
-    font-size: 0.82rem;
-    color: var(--p1);
-    font-family: 'Courier New', monospace;
-    margin-top: 4px;
-  }
+  .step-body h4 { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--p0); margin-bottom: 5px; }
+  .step-body p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; font-weight: 300; }
+  .step-body code { display: inline-block; background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.25); padding: 2px 8px; border-radius: 6px; font-size: 0.82rem; color: var(--p1); font-family: 'Courier New', monospace; margin-top: 3px; }
 
   .done-banner {
-    margin-top: 28px;
-    padding: 22px 28px;
-    border-radius: 18px;
+    margin-top: 26px; padding: 22px 26px; border-radius: 18px;
     background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(91,33,182,0.1));
     border: 1px solid rgba(192,132,252,0.3);
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.5s 0.8s ease, transform 0.5s 0.8s ease;
+    display: flex; align-items: center; gap: 16px;
+    opacity: 0; transform: translateY(10px);
+    transition: opacity 0.5s 0.9s ease, transform 0.5s 0.9s ease;
   }
-
   .done-banner.in { opacity: 1; transform: translateY(0); }
-
-  .done-banner .check {
-    width: 44px; height: 44px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--p2), var(--p4));
-    display: grid;
-    place-items: center;
-    font-size: 1.3rem;
-    flex-shrink: 0;
-    box-shadow: 0 0 20px rgba(168,85,247,0.5);
-  }
-
-  .done-banner h4 {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-    margin-bottom: 3px;
-    color: var(--p0);
-  }
-
+  .done-banner .check { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--p2), var(--p4)); display: grid; place-items: center; font-size: 1.3rem; flex-shrink: 0; box-shadow: 0 0 20px rgba(168,85,247,0.5); }
+  .done-banner h4 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 3px; color: var(--p0); }
   .done-banner p { font-size: 0.83rem; color: var(--text-muted); font-weight: 300; }
 
-  /* ── DIVIDER ── */
-  .divider {
-    width: 100%;
-    max-width: 600px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(192,132,252,0.2), transparent);
-    margin: 10px auto;
+  /* ── MODAL ── */
+  .overlay {
+    position: fixed; inset: 0;
+    background: rgba(6,2,15,0.78); backdrop-filter: blur(10px);
+    z-index: 100; display: flex; align-items: center; justify-content: center;
+    padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
   }
+  .overlay.active { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: linear-gradient(135deg, rgba(30,10,60,0.96), rgba(15,5,35,0.98));
+    border: 1px solid rgba(192,132,252,0.25); border-radius: 28px; padding: 44px 40px;
+    max-width: 480px; width: 100%; position: relative;
+    transform: scale(0.88) translateY(20px);
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease;
+    opacity: 0;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(192,132,252,0.1), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .overlay.active .modal { transform: scale(1) translateY(0); opacity: 1; }
+  .modal::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 60%; height: 1px; background: linear-gradient(90deg, transparent, rgba(192,132,252,0.6), transparent); }
+
+  .modal-close { position: absolute; top: 18px; right: 18px; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--glass-border); background: var(--glass-bg); color: var(--text-muted); cursor: pointer; font-size: 1.1rem; display: grid; place-items: center; transition: all 0.2s ease; line-height: 1; }
+  .modal-close:hover { background: rgba(168,85,247,0.2); color: white; border-color: var(--p2); }
+
+  .modal-icon { width: 64px; height: 64px; border-radius: 18px; background: linear-gradient(135deg, var(--p3), var(--p4)); display: grid; place-items: center; margin: 0 auto 22px; box-shadow: 0 0 30px rgba(124,58,237,0.5); font-size: 1.8rem; }
+  .modal h2 { font-family: 'Syne', sans-serif; font-size: 1.55rem; font-weight: 800; text-align: center; margin-bottom: 8px; letter-spacing: -0.02em; }
+  .modal > p { text-align: center; color: var(--text-muted); font-size: 0.88rem; margin-bottom: 28px; font-weight: 300; line-height: 1.65; }
+
+  .version-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .version-card { border: 1px solid var(--glass-border); background: var(--glass-bg); border-radius: 16px; padding: 20px 14px; cursor: pointer; text-align: center; transition: all 0.25s ease; position: relative; overflow: hidden; }
+  .version-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(168,85,247,0.1), transparent); opacity: 0; transition: opacity 0.25s ease; border-radius: inherit; }
+  .version-card:hover { border-color: var(--p2); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(124,58,237,0.3); }
+  .version-card:hover::before { opacity: 1; }
+  .version-card .v-icon { font-size: 1.8rem; margin-bottom: 10px; display: block; }
+  .version-card .v-name { font-family: 'Syne', sans-serif; font-size: 0.93rem; font-weight: 700; color: var(--p0); margin-bottom: 3px; }
+  .version-card .v-desc { font-size: 0.75rem; color: var(--text-muted); }
+  .version-card.new-version { border-color: rgba(168,85,247,0.3); }
+
+  .dl-progress { height: 3px; background: rgba(168,85,247,0.2); border-radius: 2px; margin-top: 18px; overflow: hidden; display: none; }
+  .dl-progress.active { display: block; }
+  .dl-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--p3), var(--p1)); border-radius: 2px; transition: width 1.8s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 0 8px var(--p2); }
 
   /* ── FOOTER ── */
-  footer {
-    text-align: center;
-    padding: 24px;
-    border-top: 1px solid var(--glass-border);
-    color: var(--text-muted);
-    font-size: 0.8rem;
-    font-weight: 300;
-    letter-spacing: 0.03em;
-    background: rgba(6,2,15,0.5);
-    backdrop-filter: blur(8px);
-  }
-
+  footer { text-align: center; padding: 24px; border-top: 1px solid var(--glass-border); color: var(--text-muted); font-size: 0.8rem; font-weight: 300; letter-spacing: 0.03em; background: rgba(6,2,15,0.5); backdrop-filter: blur(8px); }
   footer span { color: var(--p2); }
 
   /* ── RESPONSIVE ── */
-  @media (max-width: 640px) {
-    nav { padding: 16px 20px; }
-    .features { padding: 40px 20px; }
-    .tutorial-section { padding: 20px 20px 60px; }
+  @media (max-width: 680px) {
+    .nav-badge { display: none; }
+    .hero { padding: 72px 20px 56px; }
+    .features { padding: 12px 20px 52px; }
+    .tutorial-section { padding: 20px 20px 64px; }
     .version-cards { grid-template-columns: 1fr; }
-    .modal { padding: 32px 24px; }
+    .modal { padding: 32px 22px; }
     .step-card { gap: 14px; }
-  }
-
-  /* scroll-fade for feature cards */
-  .feat-card {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-  }
-  .feat-card.in { opacity: 1; transform: translateY(0); }
-
-  /* ── DOWNLOAD PROGRESS ── */
-  .dl-progress {
-    height: 3px;
-    background: rgba(168,85,247,0.2);
-    border-radius: 2px;
-    margin-top: 20px;
-    overflow: hidden;
-    display: none;
-  }
-
-  .dl-progress.active { display: block; }
-
-  .dl-bar {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, var(--p3), var(--p1));
-    border-radius: 2px;
-    transition: width 1.8s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 0 8px var(--p2);
+    .lang-btn { padding: 5px 10px; }
   }
 </style>
 </head>
@@ -699,35 +419,46 @@
 
   <!-- NAV -->
   <nav>
-    <div class="logo">
-      <div class="logo-icon">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4l5 2.18V11c0 3.5-2.33 6.79-5 7.93-2.67-1.14-5-4.43-5-7.93V7.18L12 5zm-1 3v4H9l3 5 3-5h-2V8h-2z"/></svg>
+    <div class="nav-inner">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4l5 2.18V11c0 3.5-2.33 6.79-5 7.93-2.67-1.14-5-4.43-5-7.93V7.18L12 5zm-1 3v4H9l3 5 3-5h-2V8h-2z"/></svg>
+        </div>
+        <span class="logo-text">ScriptVault</span>
       </div>
-      <span class="logo-text">ScriptVault</span>
+      <div class="nav-right">
+        <span class="nav-badge">v2.0 Live</span>
+        <div class="lang-toggle" id="langToggle">
+          <div class="lang-pill" id="langPill"></div>
+          <button class="lang-btn active" id="btnEN" onclick="setLang('en')">EN</button>
+          <button class="lang-btn" id="btnSV" onclick="setLang('sv')">SV</button>
+        </div>
+      </div>
     </div>
-    <span class="nav-badge">v2.0 Live</span>
   </nav>
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-tag">Chrome Extension</div>
+    <div class="hero-inner">
+      <div class="hero-tag lang-swap" data-key="heroTag">Chrome Extension</div>
 
-    <h1>
-      Welcome to<br/>
-      <span class="accent">Script Vault</span>
-    </h1>
+      <h1>
+        <span class="lang-swap" data-key="heroTitle1">Welcome to</span><br/>
+        <span class="accent">Script Vault</span>
+      </h1>
 
-    <p class="hero-sub">
-      Your one and only place for scripts — powerful, premium, and always up to date. Install in seconds and unlock your full potential.
-    </p>
+      <p class="hero-sub lang-swap" data-key="heroSub">
+        Your one and only place for scripts — powerful, premium, and always up to date. Install in seconds and unlock your full potential.
+      </p>
 
-    <div class="hero-actions">
-      <button class="btn-primary" id="openModalBtn">
-        ⬇ &nbsp;Download Extension
-      </button>
-      <button class="btn-secondary" onclick="scrollToTutorial()">
-        View Install Guide
-      </button>
+      <div class="hero-actions">
+        <button class="btn-primary" id="openModalBtn">
+          ⬇ &nbsp;<span class="lang-swap" data-key="btnDownload">Download Extension</span>
+        </button>
+        <button class="btn-secondary" onclick="scrollToTutorial()">
+          <span class="lang-swap" data-key="btnGuide">View Install Guide</span>
+        </button>
+      </div>
     </div>
   </section>
 
@@ -735,87 +466,100 @@
   <section class="features">
     <div class="feat-card">
       <div class="feat-icon">⚡</div>
-      <h3>Lightning Fast</h3>
-      <p>Optimised injection and execution engine built for zero-latency script loading and smooth performance.</p>
+      <h3 class="lang-swap" data-key="feat1Title">Lightning Fast</h3>
+      <p class="lang-swap" data-key="feat1Desc">Optimised injection and execution engine built for zero-latency script loading and smooth performance.</p>
     </div>
     <div class="feat-card">
       <div class="feat-icon">🔒</div>
-      <h3>Secure by Design</h3>
-      <p>All scripts are sandboxed with strict content policies — your browser stays clean and protected.</p>
+      <h3 class="lang-swap" data-key="feat2Title">Secure by Design</h3>
+      <p class="lang-swap" data-key="feat2Desc">All scripts are sandboxed with strict content policies — your browser stays clean and protected.</p>
     </div>
     <div class="feat-card">
       <div class="feat-icon">🎨</div>
-      <h3>Sleek Interface</h3>
-      <p>A polished glassmorphism UI that blends into any workflow. Dark, clean, minimal distraction.</p>
+      <h3 class="lang-swap" data-key="feat3Title">Sleek Interface</h3>
+      <p class="lang-swap" data-key="feat3Desc">A polished glassmorphism UI that blends into any workflow. Dark, clean, minimal distraction.</p>
     </div>
     <div class="feat-card">
       <div class="feat-icon">🔄</div>
-      <h3>Auto Updates</h3>
-      <p>Stay on the latest scripts automatically. New drops go live without you lifting a finger.</p>
+      <h3 class="lang-swap" data-key="feat4Title">Auto Updates</h3>
+      <p class="lang-swap" data-key="feat4Desc">Stay on the latest scripts automatically. New drops go live without you lifting a finger.</p>
     </div>
   </section>
 
   <div class="divider"></div>
 
-  <!-- TUTORIAL (hidden until download) -->
+  <!-- TUTORIAL -->
   <section class="tutorial-section" id="tutorialSection">
     <div class="tutorial-header">
-      <span class="tut-label">📦 Installation Guide</span>
-      <h2>Get Set Up in 60 Seconds</h2>
-      <p>Follow the steps below to load ScriptVault into Chrome manually.</p>
+      <span class="tut-label lang-swap" data-key="tutLabel">📦 Installation Guide</span>
+      <h2 class="lang-swap" data-key="tutTitle">Get Set Up in 60 Seconds</h2>
+      <p class="lang-swap" data-key="tutSub">Follow the steps below to load ScriptVault into Chrome manually.</p>
     </div>
 
     <div class="steps-grid" id="stepsGrid">
+
       <div class="step-card">
         <div class="step-num">01</div>
         <div class="step-body">
-          <h4>Open Chrome Extensions</h4>
-          <p>In your Chrome browser, navigate to the extensions manager.<br/>
-          <code>chrome://extensions</code></p>
+          <h4 class="lang-swap" data-key="step1Title">Extract the ZIP File</h4>
+          <p class="step-rich" data-key="step1Desc"></p>
         </div>
       </div>
+
       <div class="step-card">
         <div class="step-num">02</div>
         <div class="step-body">
-          <h4>Enable Developer Mode</h4>
-          <p>Toggle on <strong>Developer Mode</strong> in the top-right corner of the extensions page. This unlocks manual loading.</p>
+          <h4 class="lang-swap" data-key="step2Title">Open Chrome Extensions</h4>
+          <p class="step-rich" data-key="step2Desc"></p>
         </div>
       </div>
+
       <div class="step-card">
         <div class="step-num">03</div>
         <div class="step-body">
-          <h4>Click "Load Unpacked"</h4>
-          <p>A new button will appear in the top-left. Click <strong>Load unpacked</strong> to open a folder picker dialog.</p>
+          <h4 class="lang-swap" data-key="step3Title">Enable Developer Mode</h4>
+          <p class="step-rich" data-key="step3Desc"></p>
         </div>
       </div>
+
       <div class="step-card">
         <div class="step-num">04</div>
         <div class="step-body">
-          <h4>Select the ScriptVault Folder</h4>
-          <p>Navigate to your Downloads and select the <code>ScriptVault</code> folder that was just downloaded.</p>
+          <h4 class="lang-swap" data-key="step4Title">Click "Load Unpacked"</h4>
+          <p class="step-rich" data-key="step4Desc"></p>
         </div>
       </div>
+
       <div class="step-card">
         <div class="step-num">05</div>
         <div class="step-body">
-          <h4>You're Live!</h4>
-          <p>ScriptVault should now appear in your Chrome extensions list and be accessible from the toolbar. Pin it for easy access.</p>
+          <h4 class="lang-swap" data-key="step5Title">Select the ScriptVault Folder</h4>
+          <p class="step-rich" data-key="step5Desc"></p>
         </div>
       </div>
+
+      <div class="step-card">
+        <div class="step-num">06</div>
+        <div class="step-body">
+          <h4 class="lang-swap" data-key="step6Title">You're Live!</h4>
+          <p class="step-rich" data-key="step6Desc"></p>
+        </div>
+      </div>
+
     </div>
 
     <div class="done-banner" id="doneBanner">
       <div class="check">✅</div>
       <div>
-        <h4>All done — ScriptVault is ready.</h4>
-        <p>If anything isn't working, make sure Developer Mode is enabled and the correct folder was selected.</p>
+        <h4 class="lang-swap" data-key="doneTitle">All done — ScriptVault is ready.</h4>
+        <p class="lang-swap" data-key="doneDesc">If anything isn't working, make sure Developer Mode is enabled and the correct folder was selected.</p>
       </div>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer>
-    Built with 💜 by <span>Nexio</span> &nbsp;·&nbsp; ScriptVault &copy; 2025
+    <span class="lang-swap" data-key="footerBuilt">Built with</span> 💜 <span class="lang-swap" data-key="footerBy">by</span> <span>Nexio</span> &nbsp;·&nbsp; ScriptVault &copy; 2025
   </footer>
 
 </div>
@@ -824,24 +568,21 @@
 <div class="overlay" id="overlay">
   <div class="modal">
     <button class="modal-close" id="closeModal">✕</button>
-
     <div class="modal-icon">📦</div>
-    <h2>Choose a Version</h2>
-    <p>Select which build you'd like to download.<br/>Both contain the full ScriptVault extension.</p>
-
+    <h2 class="lang-swap" data-key="modalTitle">Choose a Version</h2>
+    <p class="lang-swap" data-key="modalSub">Select which build you'd like to download. Both contain the full ScriptVault extension.</p>
     <div class="version-cards">
       <div class="version-card new-version" onclick="startDownload('new')">
         <span class="v-icon">🚀</span>
-        <div class="v-name">New Version</div>
-        <div class="v-desc">Latest build · v2.0</div>
+        <div class="v-name lang-swap" data-key="verNew">New Version</div>
+        <div class="v-desc lang-swap" data-key="verNewDesc">Latest build · v2.0</div>
       </div>
       <div class="version-card" onclick="startDownload('legacy')">
         <span class="v-icon">🗂️</span>
-        <div class="v-name">Legacy Version</div>
-        <div class="v-desc">Stable build · v1.x</div>
+        <div class="v-name lang-swap" data-key="verLeg">Legacy Version</div>
+        <div class="v-desc lang-swap" data-key="verLegDesc">Stable build · v1.x</div>
       </div>
     </div>
-
     <div class="dl-progress" id="dlProgress">
       <div class="dl-bar" id="dlBar"></div>
     </div>
@@ -849,99 +590,244 @@
 </div>
 
 <script>
-  // ── MODAL ──
-  const overlay   = document.getElementById('overlay');
-  const openBtn   = document.getElementById('openModalBtn');
-  const closeBtn  = document.getElementById('closeModal');
-
-  openBtn.addEventListener('click', () => {
-    overlay.classList.add('active');
-  });
-
-  closeBtn.addEventListener('click', closeModal);
-
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) closeModal();
-  });
-
-  function closeModal() {
-    overlay.classList.remove('active');
-    document.getElementById('dlProgress').classList.remove('active');
-    document.getElementById('dlBar').style.width = '0%';
+// ══════════════════════════════════════════════
+//  TRANSLATION STRINGS
+// ══════════════════════════════════════════════
+const T = {
+  en: {
+    heroTag:     'Chrome Extension',
+    heroTitle1:  'Welcome to',
+    heroSub:     'Your one and only place for scripts — powerful, premium, and always up to date. Install in seconds and unlock your full potential.',
+    btnDownload: 'Download Extension',
+    btnGuide:    'View Install Guide',
+    feat1Title:  'Lightning Fast',
+    feat1Desc:   'Optimised injection and execution engine built for zero-latency script loading and smooth performance.',
+    feat2Title:  'Secure by Design',
+    feat2Desc:   'All scripts are sandboxed with strict content policies — your browser stays clean and protected.',
+    feat3Title:  'Sleek Interface',
+    feat3Desc:   'A polished glassmorphism UI that blends into any workflow. Dark, clean, minimal distraction.',
+    feat4Title:  'Auto Updates',
+    feat4Desc:   'Stay on the latest scripts automatically. New drops go live without you lifting a finger.',
+    tutLabel:    '📦 Installation Guide',
+    tutTitle:    'Get Set Up in 60 Seconds',
+    tutSub:      'Follow the steps below to load ScriptVault into Chrome manually.',
+    step1Title:  'Extract the ZIP File',
+    step2Title:  'Open Chrome Extensions',
+    step3Title:  'Enable Developer Mode',
+    step4Title:  'Click "Load Unpacked"',
+    step5Title:  'Select the ScriptVault Folder',
+    step6Title:  "You're Live!",
+    doneTitle:   'All done — ScriptVault is ready.',
+    doneDesc:    "If anything isn't working, make sure Developer Mode is enabled and the correct folder was selected.",
+    modalTitle:  'Choose a Version',
+    modalSub:    "Select which build you'd like to download. Both contain the full ScriptVault extension.",
+    verNew:      'New Version',
+    verNewDesc:  'Latest build · v2.0',
+    verLeg:      'Legacy Version',
+    verLegDesc:  'Stable build · v1.x',
+    footerBuilt: 'Built with',
+    footerBy:    'by',
+  },
+  sv: {
+    heroTag:     'Chrome-tillägg',
+    heroTitle1:  'Välkommen till',
+    heroSub:     'Din enda plats för scripts — kraftfull, premium och alltid uppdaterad. Installera på sekunder och lås upp din fulla potential.',
+    btnDownload: 'Ladda ner tillägget',
+    btnGuide:    'Se installationsguide',
+    feat1Title:  'Blixtsnabb',
+    feat1Desc:   'Optimerad injektions- och exekveringsmotor byggd för noll latens vid scriptladdning och smidig prestanda.',
+    feat2Title:  'Säker by Design',
+    feat2Desc:   'Alla scripts är sandboxade med strikta innehållspolicyer — din webbläsare förblir ren och skyddad.',
+    feat3Title:  'Snyggt Gränssnitt',
+    feat3Desc:   'Ett polerat glassmorfism-UI som smälter in i vilket arbetsflöde som helst. Mörkt, rent, minimal distraktion.',
+    feat4Title:  'Automatiska Uppdateringar',
+    feat4Desc:   'Håll dig på de senaste scripts automatiskt. Nya releases publiceras utan att du behöver göra något.',
+    tutLabel:    '📦 Installationsguide',
+    tutTitle:    'Kom igång på 60 sekunder',
+    tutSub:      'Följ stegen nedan för att ladda in ScriptVault i Chrome manuellt.',
+    step1Title:  'Extrahera ZIP-filen',
+    step2Title:  'Öppna Chrome-tillägg',
+    step3Title:  'Aktivera Utvecklarläge',
+    step4Title:  'Klicka på "Läs in okomprimerat"',
+    step5Title:  'Välj ScriptVault-mappen',
+    step6Title:  'Du är live!',
+    doneTitle:   'Klart — ScriptVault är redo.',
+    doneDesc:    'Om något inte fungerar, kontrollera att utvecklarläge är aktiverat och att rätt mapp valdes.',
+    modalTitle:  'Välj en version',
+    modalSub:    'Välj vilken version du vill ladda ner. Båda innehåller hela ScriptVault-tillägget.',
+    verNew:      'Ny version',
+    verNewDesc:  'Senaste bygget · v2.0',
+    verLeg:      'Äldre version',
+    verLegDesc:  'Stabilt bygge · v1.x',
+    footerBuilt: 'Byggd med',
+    footerBy:    'av',
   }
+};
 
-  // ── DOWNLOAD ──
-  function startDownload(version) {
-    const prog = document.getElementById('dlProgress');
-    const bar  = document.getElementById('dlBar');
-
-    prog.classList.add('active');
-    bar.style.width = '0%';
-
-    setTimeout(() => { bar.style.width = '100%'; }, 60);
-
-    // Trigger the actual download — both versions download the same folder
-    setTimeout(() => {
-      const link = document.createElement('a');
-      link.href = 'ScriptVault.zip';           // folder zipped alongside index.html
-      link.download = 'ScriptVault.zip';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }, 400);
-
-    // Close modal and reveal tutorial after progress bar finishes
-    setTimeout(() => {
-      closeModal();
-      showTutorial();
-    }, 2200);
+// Rich HTML for step descriptions (code + bold tags)
+const RICH = {
+  en: {
+    step1Desc: 'Locate the downloaded <code>ScriptVault.zip</code> file and extract it. Right-click → <strong>Extract All</strong> (Windows) or double-click (Mac).',
+    step2Desc: 'In your Chrome browser, navigate to the extensions manager.<br/><code>chrome://extensions</code>',
+    step3Desc: 'Toggle on <strong>Developer Mode</strong> in the top-right corner of the extensions page. This unlocks manual loading.',
+    step4Desc: 'A new button appears in the top-left. Click <strong>Load unpacked</strong> to open a folder picker dialog.',
+    step5Desc: 'Navigate to your Downloads and select the <code>ScriptVault</code> folder you extracted in step 1.',
+    step6Desc: 'ScriptVault should now appear in your Chrome extensions list and be accessible from the toolbar. Pin it for easy access.',
+  },
+  sv: {
+    step1Desc: 'Hitta den nedladdade <code>ScriptVault.zip</code>-filen och extrahera den. Högerklicka → <strong>Extrahera alla</strong> (Windows) eller dubbelklicka (Mac).',
+    step2Desc: 'Öppna tilläggshanteraren i din Chrome-webbläsare.<br/><code>chrome://extensions</code>',
+    step3Desc: 'Slå på <strong>Utvecklarläge</strong> i det övre högra hörnet på tilläggssidan. Detta låser upp manuell laddning.',
+    step4Desc: 'En ny knapp visas uppe till vänster. Klicka på <strong>Läs in okomprimerat</strong> för att öppna en mappväljare.',
+    step5Desc: 'Navigera till dina Nedladdningar och välj mappen <code>ScriptVault</code> som du extraherade i steg 1.',
+    step6Desc: 'ScriptVault ska nu visas i din lista över Chrome-tillägg och vara tillgänglig från verktygsfältet. Fäst det för enkel åtkomst.',
   }
+};
 
-  // ── TUTORIAL ──
-  function showTutorial() {
-    const section = document.getElementById('tutorialSection');
-    section.classList.add('visible');
-    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+// ══════════════════════════════════════════════
+//  LANG SYSTEM
+// ══════════════════════════════════════════════
+let currentLang = 'en';
 
-    // Stagger step cards in
-    const cards = document.querySelectorAll('.step-card');
-    cards.forEach((card, i) => {
-      setTimeout(() => card.classList.add('in'), 200 + i * 120);
+function applyRich(lang) {
+  document.querySelectorAll('.step-rich').forEach(el => {
+    const key = el.dataset.key;
+    if (RICH[lang][key]) el.innerHTML = RICH[lang][key];
+  });
+}
+
+function positionPill(lang) {
+  const pill    = document.getElementById('langPill');
+  const toggle  = document.getElementById('langToggle');
+  const btn     = document.getElementById(lang === 'en' ? 'btnEN' : 'btnSV');
+  const tr = toggle.getBoundingClientRect();
+  const br = btn.getBoundingClientRect();
+  pill.style.width     = br.width + 'px';
+  pill.style.transform = `translateX(${br.left - tr.left - 3}px)`;
+}
+
+function setLang(lang) {
+  if (lang === currentLang) return;
+  currentLang = lang;
+
+  document.getElementById('btnEN').classList.toggle('active', lang === 'en');
+  document.getElementById('btnSV').classList.toggle('active', lang === 'sv');
+  positionPill(lang);
+
+  // Fade out all swappable text
+  const swaps = document.querySelectorAll('.lang-swap');
+  swaps.forEach(el => el.classList.add('fading'));
+
+  setTimeout(() => {
+    // Plain text swaps
+    swaps.forEach(el => {
+      const key = el.dataset.key;
+      if (key && T[lang][key] !== undefined) el.textContent = T[lang][key];
     });
+    // Rich HTML step descs
+    applyRich(lang);
+    // Fade back in
+    swaps.forEach(el => el.classList.remove('fading'));
+  }, 195);
+}
 
-    setTimeout(() => {
-      document.getElementById('doneBanner').classList.add('in');
-    }, 1200);
-  }
+// Init on load
+window.addEventListener('load', () => {
+  positionPill('en');
+  applyRich('en');
+});
 
-  function scrollToTutorial() {
-    const section = document.getElementById('tutorialSection');
-    if (!section.classList.contains('visible')) {
-      showTutorial();
-    } else {
-      section.scrollIntoView({ behavior: 'smooth' });
+// Reposition pill on resize
+window.addEventListener('resize', () => positionPill(currentLang));
+
+// ══════════════════════════════════════════════
+//  MODAL
+// ══════════════════════════════════════════════
+const overlay  = document.getElementById('overlay');
+const openBtn  = document.getElementById('openModalBtn');
+const closeBtn = document.getElementById('closeModal');
+
+openBtn.addEventListener('click', () => overlay.classList.add('active'));
+closeBtn.addEventListener('click', closeModal);
+overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+
+function closeModal() {
+  overlay.classList.remove('active');
+  document.getElementById('dlProgress').classList.remove('active');
+  document.getElementById('dlBar').style.width = '0%';
+}
+
+// ══════════════════════════════════════════════
+//  DOWNLOAD
+// ══════════════════════════════════════════════
+function startDownload() {
+  const prog = document.getElementById('dlProgress');
+  const bar  = document.getElementById('dlBar');
+  prog.classList.add('active');
+  bar.style.width = '0%';
+  setTimeout(() => { bar.style.width = '100%'; }, 60);
+
+  setTimeout(() => {
+    const link = document.createElement('a');
+    link.href = 'ScriptVault.zip';
+    link.download = 'ScriptVault.zip';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }, 380);
+
+  setTimeout(() => {
+    closeModal();
+    showTutorial();
+  }, 2200);
+}
+
+// ══════════════════════════════════════════════
+//  TUTORIAL
+// ══════════════════════════════════════════════
+function showTutorial() {
+  const section = document.getElementById('tutorialSection');
+  section.classList.add('visible');
+  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  document.querySelectorAll('.step-card').forEach((card, i) => {
+    setTimeout(() => card.classList.add('in'), 200 + i * 110);
+  });
+
+  setTimeout(() => {
+    document.getElementById('doneBanner').classList.add('in');
+  }, 1350);
+}
+
+function scrollToTutorial() {
+  const section = document.getElementById('tutorialSection');
+  if (!section.classList.contains('visible')) showTutorial();
+  else section.scrollIntoView({ behavior: 'smooth' });
+}
+
+// ══════════════════════════════════════════════
+//  FEATURE CARD SCROLL REVEAL
+// ══════════════════════════════════════════════
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('in'), 50);
+      revealObs.unobserve(entry.target);
     }
-  }
-
-  // ── INTERSECTION OBSERVER for feature cards ──
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('in'), 80);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15 });
-
-  document.querySelectorAll('.feat-card').forEach((card, i) => {
-    card.style.transitionDelay = `${i * 0.08}s`;
-    observer.observe(card);
   });
+}, { threshold: 0.1 });
 
-  // ── KEYBOARD CLOSE ──
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
-  });
+document.querySelectorAll('.feat-card').forEach((card, i) => {
+  card.style.transitionDelay = `${i * 0.09}s`;
+  revealObs.observe(card);
+});
+
+// ══════════════════════════════════════════════
+//  KEYBOARD
+// ══════════════════════════════════════════════
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
 </script>
 </body>
 </html>
